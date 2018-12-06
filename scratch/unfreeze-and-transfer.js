@@ -5,10 +5,13 @@ SHASTA_API = 'https://api.shasta.trongrid.io';
 MAINNET_API = 'https://api.trongrid.io';
 
 /////////////////////////////// CHANGE THESE VALUES /////////////////////////////////////////
-CURRENT_API = SHASTA_API
+CURRENT_API = SHASTA_API;
 //CURRENT_API = MAINNET_API
 const PRIVATE_KEY = 'F84D52ADBAA82BEB2A48C14BC09D51DE2A2BEED620F17054CAA013312838B4DB';
 const NEW_ADDRESS = 'TSMM53DyV9tW3jVGwKfukGS8YbaiRG17EQ';
+/////////////////////////////////////////////////////////////////////////////////////////////
+AMOUNT_TO_FREEZE = 100;
+DAYS_TO_FREEZE = 3;
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 const HttpProvider = TronWeb.providers.HttpProvider;
@@ -33,7 +36,7 @@ App = {
         const addressbalance = await tronWeb.trx.getBalance(currentaddress);
         console.log('---------------------------')
         console.log("addressbalance", addressbalance);
-        const freezetransaction = await tronWeb.transactionBuilder.freezeBalance(tronWeb.toSun(100), 3, "BANDWIDTH");
+        const freezetransaction = await tronWeb.transactionBuilder.freezeBalance(tronWeb.toSun(AMOUNT_TO_FREEZE), DAYS_TO_FREEZE, "BANDWIDTH");
         console.log('---------------------------')
         console.log("freezetransaction", freezetransaction);
 
