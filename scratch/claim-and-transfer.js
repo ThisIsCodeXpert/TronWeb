@@ -28,26 +28,7 @@ const tronWeb = new TronWeb(
 
 App = {
 
-     Freeze_js : async function(){
-
-        const currentaddress = await tronWeb.address.fromHex((((await tronWeb.trx.getAccount()).address).toString()));
-        console.log("currentaddress", currentaddress);
-
-        const addressbalance = await tronWeb.trx.getBalance(currentaddress);
-        console.log('---------------------------')
-        console.log("addressbalance", addressbalance);
-        const freezetransaction = await tronWeb.transactionBuilder.freezeBalance(tronWeb.toSun(AMOUNT_TO_FREEZE), DAYS_TO_FREEZE, "BANDWIDTH");
-        console.log('---------------------------')
-        console.log("freezetransaction", freezetransaction);
-
-        const signedfreezetransaction = await tronWeb.trx.sign(freezetransaction);
-        console.log('---------------------------')
-        console.log("signedfreezetransaction", signedfreezetransaction);
-        tronWeb.trx.sendRawTransaction(signedfreezetransaction);
-
-     },
-
-    UnfreezeAndTransfer_js : async function(){
+    ClaimAndTransfer_js : async function(){
 
         const currentaddressunfreeze = tronWeb.address.fromHex((((await tronWeb.trx.getAccount()).address).toString()));
         const currentaddressbalance = (await tronWeb.trx.getAccount()).balance;
@@ -56,27 +37,7 @@ App = {
         while (true) {
 
             try{
-
-                const unfreeze = await tronWeb.transactionBuilder.unfreezeBalance("BANDWIDTH", currentaddressunfreeze);
-
-                console.log("unfreeze", unfreeze);
-
-                const signedunfreeze = await tronWeb.trx.sign(unfreeze, PRIVATE_KEY);
-                console.log("signedunfreeze", signedunfreeze);
-                tronWeb.trx.sendRawTransaction(signedunfreeze);
-
-            }catch(err){
-                console.log('-----*****************-----')
-                console.log("Unfreeze Error : ", err);
-                console.log('It is not the time to unfreeze yet!')
-                console.log('-----*****************-----')
-
-            }
-
-
-            try{
                     const transfer = await tronWeb.transactionBuilder.sendTrx(NEW_ADDRESS, currentaddressbalance, currentaddressunfreeze);
-                    //const transfer = await tronWeb.transactionBuilder.sendTrx(NEW_ADDRESS, (currentaddressbalance/10), currentaddressunfreeze);         //*********CHANGE IT!!!!!!!!!!*****************//
 
                     const signedtransfer = await tronWeb.trx.sign(transfer, PRIVATE_KEY);
                     console.log("signedtransfer", signedtransfer);
@@ -95,7 +56,6 @@ App = {
 }
 
 ////////////////////////////////////////////////////////////////////
-App.Freeze_js().then(console.log)
-//App.UnfreezeAndTransfer_js().then(console.log)
+App.ClaimAndTransfer_js().then(console.log)
 ////////////////////////////////////////////////////////////////////
 
